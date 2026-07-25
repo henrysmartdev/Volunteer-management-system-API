@@ -2,6 +2,8 @@ import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import crypto from "crypto";
+import PasswordReset from "../models/PasswordReset.js";
 
 export const registerUser = async (userData) => {
   const { firstName, lastName, email, password } = userData;
@@ -56,4 +58,55 @@ export const loginUser = async ({ email, password }) => {
     user,
     token,
   };
+};
+
+export const forgotPassword = async ({ email }) => {
+  const user = await User.findOne({
+    where: { email },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const token = crypto.randomBytes(32).toString("hex");
+
+  const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+
+  await PasswordReset.create({
+    userId: user.id,
+    token,
+    expiresAt,
+  });
+
+  return token;
+};
+
+export const resetPassword = async ({ token, password }) => {
+  const reset = await PasswordReset.findOne({
+    where: {
+      token,
+      used: false,
+    },
+  });
+
+  if (!reset) {
+    throw new Error("Invalid token");
+  }
+
+  if (new Date() > reset.expiresAt) {
+    throw new Error("Token expired");
+  }
+
+  const user = await User.findByPk(reset.userId);
+
+  const hashedPassword = await bcrypt.hash(password, 12);
+
+  user.password = hashedPassword;
+
+  await user.save();
+
+  reset.used = true;
+
+  await reset.save();
 };
