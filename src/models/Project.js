@@ -20,9 +20,24 @@ const Project = sequelize.define(
       allowNull: false,
     },
 
+    startDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+
+    endDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+
     status: {
       type: DataTypes.ENUM("ACTIVE", "COMPLETED", "ARCHIVED"),
       defaultValue: "ACTIVE",
+    },
+
+    createdBy: {
+      type: DataTypes.UUID,
+      allowNull: false,
     },
   },
   {
