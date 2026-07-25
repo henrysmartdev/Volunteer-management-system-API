@@ -1,4 +1,9 @@
-import { registerUser, loginUser } from "../services/auth.service.js";
+import {
+  registerUser,
+  loginUser,
+  forgotPassword,
+  resetPassword,
+} from "../services/auth.service.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
@@ -42,5 +47,24 @@ export const login = async (req, res) => {
       user: buildUserResponse(user),
       token,
     },
+  });
+};
+
+export const forgotPasswordController = async (req, res) => {
+  const token = await forgotPassword(req.body);
+
+  res.status(200).json({
+    success: true,
+    message: "Password reset token generated",
+    token,
+  });
+};
+
+export const resetPasswordController = async (req, res) => {
+  await resetPassword(req.body);
+
+  res.status(200).json({
+    success: true,
+    message: "Password updated successfully",
   });
 };
