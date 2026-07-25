@@ -8,6 +8,6 @@ POST /api/v1/auth/register
 POST /api/v1/auth/forgot-password
 POST /api/v1/auth/reset-password
 
-<!-- migartion -->
+GET /api/v1/users/profile
 
-npx sequelize-cli db:migrate:status
+POST /api/v1/projects
