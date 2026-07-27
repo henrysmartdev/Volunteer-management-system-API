@@ -36,15 +36,22 @@ const User = sequelize.define(
 
     role: {
       type: DataTypes.ENUM("VOLUNTEER", "COORDINATOR"),
+      allowNull: false,
       defaultValue: "VOLUNTEER",
     },
 
-    isActive: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true,
+    avatar: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+
+    avatarPublicId: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {
+    tableName: "Users",
     timestamps: true,
   },
 );

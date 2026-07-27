@@ -1,13 +1,21 @@
 # Volunteer-management-system-API
 
-Deliver the core MVP functionality for the Volunteer Management System by Developing the APIs and business logic that power authentication, project management, attendance, and reporting.
+Core API endpoints for the Volunteer Management System, including authentication, user profile, and project management.
 
-POST /api/v1/auth/login
-POST /api/v1/auth/register
+## Authentication
 
-POST /api/v1/auth/forgot-password
-POST /api/v1/auth/reset-password
+- POST `/api/v1/auth/register`
+- POST `/api/v1/auth/login`
+- POST `/api/v1/auth/forgot-password`
+- POST `/api/v1/auth/reset-password`
 
-GET /api/v1/users/profile
+## User profile
 
-POST /api/v1/projects
+- GET `/api/v1/users/profile`
+- PUT `/api/v1/users/profile`
+- PATCH `/api/v1/users/profile/avatar`
+  - multipart form field: `avatar`
+
+## Projects
+
+- POST `/api/v1/projects`
