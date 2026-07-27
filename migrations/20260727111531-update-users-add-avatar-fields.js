@@ -1,0 +1,21 @@
+"use strict";
+
+export default {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.addColumn("Users", "avatar", {
+      type: Sequelize.STRING,
+      allowNull: true,
+    });
+
+    await queryInterface.addColumn("Users", "avatarPublicId", {
+      type: Sequelize.STRING,
+      allowNull: true,
+    });
+  },
+
+  async down(queryInterface) {
+    await queryInterface.removeColumn("Users", "avatar");
+
+    await queryInterface.removeColumn("Users", "avatarPublicId");
+  },
+};
