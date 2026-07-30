@@ -82,5 +82,5 @@ const deleteTask = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, message: 'Task deleted' });
 });
  
-export default = { createTask, getTasks, getTaskById, updateTask, deleteTask };
+export default { createTask, getTasks, getTaskById, updateTask, deleteTask };
  
