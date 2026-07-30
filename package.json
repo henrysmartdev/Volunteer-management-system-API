@@ -4,10 +4,8 @@
   "description": "Deliver the core MVP functionality for the Volunteer Management System by Developing the APIs and business logic that power authentication, project management, attendance, and reporting.",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./src/server.js",
-    "start": "node ./src/server.js",
-    "migrate": "sequelize-cli db:migrate",
-    "migrate:undo": "sequelize-cli db:migrate:undo"
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
   },
   "repository": {
     "type": "git",
