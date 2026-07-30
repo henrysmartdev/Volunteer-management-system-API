@@ -19,3 +19,7 @@ Core API endpoints for the Volunteer Management System, including authentication
 ## Projects
 
 - POST `/api/v1/projects`
+- GET  `/api/v1/projects`
+- GET  `/api/v1/projects/:id`
+- PATCH `/api/v1/projects/:id`
+- DELETE `/api/v1/projects/:id`
