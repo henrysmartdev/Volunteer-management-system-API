@@ -33,5 +33,5 @@ Attendance.belongsTo(Task, { foreignKey: 'taskId', allowNull: true }); // option
 User.hasMany(Attendance, { foreignKey: 'volunteerId' });
 Project.hasMany(Attendance, { foreignKey: 'projectId' });
 
-module.exports = { sequelize, User, Project, Task, Assignment, Attendance };
+export default { sequelize, User, Project, Task, Assignment, Attendance };
 

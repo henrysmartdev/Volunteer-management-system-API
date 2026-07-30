@@ -37,4 +37,4 @@ const Attendance = sequelise.define(
 
 
 
-Module.expots = Attendance;
+export default Attendance;

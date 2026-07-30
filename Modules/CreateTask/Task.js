@@ -36,4 +36,4 @@ const Task = sequelise.define(
 );
 
 
-Module.exports = Task;
+export default Task;

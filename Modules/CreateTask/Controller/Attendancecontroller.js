@@ -25,4 +25,4 @@ const logAttendance = asyncHandler(async (req, res) => {
   res.status(201).json({ success: true, data: record });
 });
 
-module.exports = { logAttendance };
+export default { logAttendance };

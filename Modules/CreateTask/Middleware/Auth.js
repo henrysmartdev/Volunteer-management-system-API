@@ -28,6 +28,6 @@ function protect(req, res, next) {
   };
 }
 
-module.exports = { protect, authorize };
+export default { protect, authorize };
 
 

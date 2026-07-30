@@ -31,4 +31,4 @@ const Assignment = sequelise.define(
 );
 
 
-Module.exports = Assingments;
+export default Assignment;
