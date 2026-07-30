@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import sequelize from "../config/database.js";
 
 const Project = sequelize.define(
-  "Project",
+  "project",
   {
     id: {
       type: DataTypes.UUID,
@@ -13,6 +13,7 @@ const Project = sequelize.define(
     title: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
 
     description: {
@@ -31,8 +32,8 @@ const Project = sequelize.define(
     },
 
     status: {
-      type: DataTypes.ENUM("ACTIVE", "COMPLETED", "ARCHIVED"),
-      defaultValue: "ACTIVE",
+      type: DataTypes.ENUM( "DRAFT", "ACTIVE", "COMPLETED", "ARCHIVED"),
+      defaultValue: "DRAFT",
     },
 
     createdBy: {
@@ -43,6 +44,10 @@ const Project = sequelize.define(
   {
     timestamps: true,
   },
+  {
+      tableName: "projects",
+      freezeTableName: true
+  }
 );
 
 export default Project;
