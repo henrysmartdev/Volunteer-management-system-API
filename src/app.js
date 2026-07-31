@@ -5,6 +5,7 @@ import morgan from "morgan";
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import projectRoutes from "./routes/project.routes.js";
+import assignmentRoutes from "./routes/assignment.routes.js";
 
 const app = express();
 
@@ -22,5 +23,18 @@ app.get("/", (req, res) => {
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/projects", projectRoutes);
+app.use("/api/v1/tasks/:taskId/assignments", assignmentRoutes);
+
+app.use((error, req, res, next) => {
+  if (res.headersSent) {
+    return next(error);
+  }
+
+  console.error(error);
+  return res.status(error.status || 500).json({
+    success: false,
+    message: error.message || "Internal server error",
+  });
+});
 
 export default app;

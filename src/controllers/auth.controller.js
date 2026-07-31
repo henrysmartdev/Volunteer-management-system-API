@@ -5,9 +5,6 @@ import {
   resetPassword,
 } from "../services/auth.service.js";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 const buildUserResponse = (user) => ({
   id: user.id,

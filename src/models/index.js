@@ -3,58 +3,63 @@ import sequelize from "../config/database.js";
 import User from "./User.js";
 import Project from "./Project.js";
 import Task from "./Task.js";
-import Assignment from "./Assignment.js";
-import Attendance from "./Attendance.js";
+import TaskAssignment from "./TaskAssignment.js";
 import PasswordReset from "./PasswordReset.js";
 
 /*Relationships*/
 
 // A coordinator creates many projects
-User.hasMany(Project, {
-  foreignKey: "createdBy",
-});
-
 Project.belongsTo(User, {
   foreignKey: "createdBy",
+  as: "creator",
 });
 
-// A project has many tasks
+User.hasMany(Project, {
+  foreignKey: "createdBy",
+  as: "projects",
+});
+
 Project.hasMany(Task, {
   foreignKey: "projectId",
+  as: "tasks",
 });
 
 Task.belongsTo(Project, {
   foreignKey: "projectId",
+  as: "project",
 });
 
 // Volunteers are assigned to tasks
 User.belongsToMany(Task, {
-  through: Assignment,
+  through: TaskAssignment,
   foreignKey: "volunteerId",
+  otherKey: "taskId",
+  as: "assignedTasks",
 });
 
 Task.belongsToMany(User, {
-  through: Assignment,
+  through: TaskAssignment,
   foreignKey: "taskId",
+  otherKey: "volunteerId",
+  as: "volunteers",
 });
-
-// Attendance
-User.hasMany(Attendance, {
+Task.hasMany(TaskAssignment, {
+  foreignKey: "taskId",
+  as: "assignments",
+});
+User.hasMany(TaskAssignment, {
   foreignKey: "volunteerId",
+  as: "taskAssignments",
+});
+TaskAssignment.belongsTo(Task, {
+  foreignKey: "taskId",
+  as: "task",
 });
 
-Attendance.belongsTo(User, {
+TaskAssignment.belongsTo(User, {
   foreignKey: "volunteerId",
+  as: "volunteer",
 });
-
-Task.hasMany(Attendance, {
-  foreignKey: "taskId",
-});
-
-Attendance.belongsTo(Task, {
-  foreignKey: "taskId",
-});
-
 // Password resets
 User.hasMany(PasswordReset, {
   foreignKey: "userId",
@@ -69,7 +74,6 @@ export {
   User,
   Project,
   Task,
-  Assignment,
-  Attendance,
+  TaskAssignment,
   PasswordReset,
 };
