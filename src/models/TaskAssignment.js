@@ -20,6 +20,12 @@ const TaskAssignment = sequelize.define(
       allowNull: false,
     },
 
+    status: {
+      type: DataTypes.ENUM("NOT_STARTED", "IN_PROGRESS", "COMPLETED"),
+      allowNull: false,
+      defaultValue: "NOT_STARTED",
+    },
+
     assignedAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,

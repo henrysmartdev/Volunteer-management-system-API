@@ -2,6 +2,7 @@ import {
   assignVolunteers,
   getTaskAssignments,
   removeVolunteerAssignment,
+  updateTaskStatus,
 } from "../services/assignment.service.js";
 
 export const assignVolunteersController = async (req, res, next) => {
@@ -47,6 +48,24 @@ export const removeVolunteerAssignmentController = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "Volunteer removed successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateTaskStatusController = async (req, res, next) => {
+  try {
+    const assignment = await updateTaskStatus(
+      req.params.taskId,
+      req.user.id,
+      req.body.status,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Task status updated successfully",
+      data: assignment,
     });
   } catch (error) {
     next(error);

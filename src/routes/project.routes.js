@@ -19,6 +19,7 @@ import {
 } from "../validators/project.validator.js";
 
 import taskRoutes from "./task.routes.js";
+import dashboardRoutes from "./dashboard.routes.js";
 
 const router = Router();
 
@@ -52,5 +53,7 @@ router.delete(
 );
 
 router.use("/:projectId/tasks", taskRoutes);
+
+router.use("/:projectId/dashboard", dashboardRoutes);
 
 export default router;
