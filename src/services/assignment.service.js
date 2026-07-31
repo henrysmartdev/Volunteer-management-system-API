@@ -5,8 +5,13 @@ import Project from "../models/Project.js";
 import Task from "../models/Task.js";
 import User from "../models/User.js";
 import TaskAssignment from "../models/TaskAssignment.js";
-import { ROLES } from "../constants/roles.js";
 
+import { ROLES } from "../constants/roles.js";
+import { createNotifications } from "./notification.service.js";
+
+/**
+ * Assign one or more volunteers to a task
+ */
 export const assignVolunteers = async (taskId, coordinatorId, volunteerIds) => {
   const transaction = await sequelize.transaction();
 
@@ -27,12 +32,12 @@ export const assignVolunteers = async (taskId, coordinatorId, volunteerIds) => {
       throw new Error("Project not found");
     }
 
-    // Only the project owner can assign volunteers
+    // Ensure coordinator owns the project
     if (project.createdBy !== coordinatorId) {
       throw new Error("You are not authorized to assign volunteers");
     }
 
-    // Ensure all users exist and are volunteers
+    // Validate volunteers
     const volunteers = await User.findAll({
       where: {
         id: {
@@ -47,7 +52,7 @@ export const assignVolunteers = async (taskId, coordinatorId, volunteerIds) => {
       throw new Error("One or more volunteers are invalid");
     }
 
-    // Check for duplicate assignments
+    // Prevent duplicate assignments
     const existingAssignments = await TaskAssignment.findAll({
       where: {
         taskId,
@@ -62,7 +67,7 @@ export const assignVolunteers = async (taskId, coordinatorId, volunteerIds) => {
       throw new Error("One or more volunteers are already assigned");
     }
 
-    // Create assignments
+    // Create task assignments
     const assignments = volunteerIds.map((volunteerId) => ({
       taskId,
       volunteerId,
@@ -72,6 +77,16 @@ export const assignVolunteers = async (taskId, coordinatorId, volunteerIds) => {
       transaction,
     });
 
+    // Generate notifications
+    await createNotifications(
+      volunteerIds,
+      "New Task Assignment",
+      `You have been assigned to the task "${task.title}".`,
+      "TASK_ASSIGNMENT",
+      transaction,
+    );
+
+    // Commit transaction
     await transaction.commit();
 
     return createdAssignments;
@@ -81,6 +96,9 @@ export const assignVolunteers = async (taskId, coordinatorId, volunteerIds) => {
   }
 };
 
+/**
+ * Get all volunteers assigned to a task
+ */
 export const getTaskAssignments = async (taskId) => {
   const task = await Task.findByPk(taskId);
 
@@ -88,11 +106,8 @@ export const getTaskAssignments = async (taskId) => {
     throw new Error("Task not found");
   }
 
-  const assignments = await TaskAssignment.findAll({
-    where: {
-      taskId,
-    },
-
+  return TaskAssignment.findAll({
+    where: { taskId },
     include: [
       {
         model: User,
@@ -100,13 +115,14 @@ export const getTaskAssignments = async (taskId) => {
         attributes: ["id", "firstName", "lastName", "email", "avatar"],
       },
     ],
-
+    attributes: ["id", "status", "assignedAt", "createdAt", "updatedAt"],
     order: [["createdAt", "DESC"]],
   });
-
-  return assignments;
 };
 
+/**
+ * Remove a volunteer from a task
+ */
 export const removeVolunteerAssignment = async (
   taskId,
   volunteerId,
@@ -140,6 +156,25 @@ export const removeVolunteerAssignment = async (
   }
 
   await assignment.destroy();
+
+  return assignment;
+};
+
+export const updateTaskStatus = async (taskId, volunteerId, status) => {
+  const assignment = await TaskAssignment.findOne({
+    where: {
+      taskId,
+      volunteerId,
+    },
+  });
+
+  if (!assignment) {
+    throw new Error("Task assignment not found");
+  }
+
+  assignment.status = status;
+
+  await assignment.save();
 
   return assignment;
 };

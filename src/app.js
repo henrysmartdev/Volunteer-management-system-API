@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import projectRoutes from "./routes/project.routes.js";
 import assignmentRoutes from "./routes/assignment.routes.js";
+import notificationRoutes from "./routes/notification.routes.js";
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/projects", projectRoutes);
 app.use("/api/v1/tasks/:taskId/assignments", assignmentRoutes);
+app.use("/api/v1/notifications", notificationRoutes);
 
 app.use((error, req, res, next) => {
   if (res.headersSent) {

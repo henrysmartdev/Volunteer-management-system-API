@@ -5,6 +5,7 @@ import Project from "./Project.js";
 import Task from "./Task.js";
 import TaskAssignment from "./TaskAssignment.js";
 import PasswordReset from "./PasswordReset.js";
+import Notification from "./Notification.js";
 
 /*Relationships*/
 
@@ -69,6 +70,15 @@ PasswordReset.belongsTo(User, {
   foreignKey: "userId",
 });
 
+User.hasMany(Notification, {
+  foreignKey: "userId",
+  as: "notifications",
+});
+Notification.belongsTo(User, {
+  foreignKey: "userId",
+  as: "user",
+});
+
 export {
   sequelize,
   User,
@@ -76,4 +86,5 @@ export {
   Task,
   TaskAssignment,
   PasswordReset,
+  Notification,
 };

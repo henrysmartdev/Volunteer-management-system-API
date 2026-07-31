@@ -10,8 +10,10 @@ import {
   assignVolunteersController,
   getTaskAssignmentsController,
   removeVolunteerAssignmentController,
+  updateTaskStatusController,
 } from "../controllers/assignment.controller.js";
 import { assignVolunteersValidator } from "../validators/assignment.validator.js";
+import { updateTaskStatusValidator } from "../validators/taskStatus.validator.js";
 
 const router = Router({ mergeParams: true });
 
@@ -33,4 +35,12 @@ router.delete(
   removeVolunteerAssignmentController,
 );
 
+router.patch(
+  "/status",
+  authenticate,
+  authorize(ROLES.VOLUNTEER),
+  updateTaskStatusValidator,
+  validate,
+  updateTaskStatusController,
+);
 export default router;

@@ -49,4 +49,16 @@ Core API endpoints for the Volunteer Management System, including authentication
   }
 
 - GET `/api/v1/tasks/:taskId/assignments`
-- DELETE `/api/v1/tasks/:taskId/assignments/:volunteerId`
+- DELETE `/api/v1/tasks/:taskId/assignments/:vwholunteerId`
+- PATCH `/api/v1/projects/:projectId/tasks/:taskId/assignments/status`
+- GET `/api/v1/projects/:projectId/tasks/:taskId/assignments`
+
+## Notifications
+
+- GET `/api/v1/notifications`
+- PATCH `/api/v1/notifications/{notificationId}/read`
+- PATCH `/api/v1/notifications/read-all`
+
+## Dashbord progress
+
+- GET `/api/v1/projects/:projectId/dashboard`
