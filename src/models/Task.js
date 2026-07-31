@@ -17,18 +17,27 @@ const Task = sequelize.define(
 
     description: {
       type: DataTypes.TEXT,
-    },
-
-    priority: {
-      type: DataTypes.ENUM("LOW", "MEDIUM", "HIGH"),
-      defaultValue: "MEDIUM",
+      allowNull: true,
     },
 
     dueDate: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+
+    status: {
+      type: DataTypes.ENUM("PENDING", "IN_PROGRESS", "COMPLETED"),
+      defaultValue: "PENDING",
+      allowNull: false,
+    },
+
+    projectId: {
+      type: DataTypes.UUID,
+      allowNull: false,
     },
   },
   {
+    tableName: "Tasks",
     timestamps: true,
   },
 );

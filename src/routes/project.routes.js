@@ -6,8 +6,19 @@ import validate from "../middleware/validate.js";
 
 import { ROLES } from "../constants/roles.js";
 
-import { createProjectController } from "../controllers/project.controller.js";
-import { createProjectValidator } from "../validators/project.validator.js";
+import {
+  createProjectController,
+  deleteProjectController,
+  getProjectByIdController,
+  getProjectsController,
+  updateProjectController,
+} from "../controllers/project.controller.js";
+import {
+  createProjectValidator,
+  updateProjectValidator,
+} from "../validators/project.validator.js";
+
+import taskRoutes from "./task.routes.js";
 
 const router = Router();
 
@@ -19,5 +30,27 @@ router.post(
   validate,
   createProjectController,
 );
+
+router.get("/", authenticate, getProjectsController);
+
+router.get("/:id", authenticate, getProjectByIdController);
+
+router.put(
+  "/:id",
+  authenticate,
+  authorize(ROLES.COORDINATOR),
+  updateProjectValidator,
+  validate,
+  updateProjectController,
+);
+
+router.delete(
+  "/:id",
+  authenticate,
+  authorize(ROLES.COORDINATOR),
+  deleteProjectController,
+);
+
+router.use("/:projectId/tasks", taskRoutes);
 
 export default router;

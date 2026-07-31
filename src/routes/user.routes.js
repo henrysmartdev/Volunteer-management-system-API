@@ -1,13 +1,10 @@
 import { Router } from "express";
 
 import authenticate from "../middleware/auth.middleware.js";
-import authorize from "../middleware/authorize.middleware.js";
 import validate from "../middleware/validate.js";
 import asyncHandler from "../middleware/asyncHandler.js";
 
 import upload from "../config/multer.js";
-
-import { ROLES } from "../constants/roles.js";
 
 import {
   getProfileController,
@@ -36,35 +33,6 @@ router.patch(
   authenticate,
   upload.single("avatar"),
   asyncHandler(uploadProfilePictureController),
-);
-
-/*
-Test RBAC
- These routes can be removed later.
-*/
-
-router.get(
-  "/coordinator",
-  authenticate,
-  authorize(ROLES.COORDINATOR),
-  (req, res) => {
-    res.json({
-      success: true,
-      message: "Welcome Coordinator",
-    });
-  },
-);
-
-router.get(
-  "/volunteer",
-  authenticate,
-  authorize(ROLES.VOLUNTEER),
-  (req, res) => {
-    res.json({
-      success: true,
-      message: "Welcome Volunteer",
-    });
-  },
 );
 
 export default router;

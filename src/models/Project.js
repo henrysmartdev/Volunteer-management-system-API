@@ -31,8 +31,8 @@ const Project = sequelize.define(
     },
 
     status: {
-      type: DataTypes.ENUM("ACTIVE", "COMPLETED", "ARCHIVED"),
-      defaultValue: "ACTIVE",
+      type: DataTypes.ENUM("DRAFT", "ACTIVE", "COMPLETED", "ARCHIVED"),
+      defaultValue: "DRAFT",
     },
 
     createdBy: {
@@ -41,6 +41,8 @@ const Project = sequelize.define(
     },
   },
   {
+    tableName: "Projects",
+    freezeTableName: true,
     timestamps: true,
   },
 );
