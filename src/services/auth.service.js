@@ -3,9 +3,16 @@ import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import PasswordReset from "../models/PasswordReset.js";
+import { ROLES } from "../constants/roles.js";
 
 export const registerUser = async (userData) => {
-  const { firstName, lastName, email, password } = userData;
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    role = ROLES.VOLUNTEER,
+  } = userData;
 
   const existingUser = await User.findOne({
     where: { email },
@@ -22,6 +29,7 @@ export const registerUser = async (userData) => {
     lastName,
     email,
     password: hashedPassword,
+    role,
   });
 
   return user;

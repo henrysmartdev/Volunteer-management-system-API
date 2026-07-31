@@ -4,15 +4,27 @@ import authenticate from "../middleware/auth.middleware.js";
 import authorize from "../middleware/authorize.middleware.js";
 
 import { ROLES } from "../constants/roles.js";
-import { getProjectDashboardController } from "../controllers/dashboard.controller.js";
+import {
+  getCoordinatorDashboardController,
+  getProjectDashboardController,
+} from "../controllers/dashboard.controller.js";
 
-const router = Router({ mergeParams: true });
+const router = Router();
+const projectDashboardRoutes = Router({ mergeParams: true });
 
-router.get(
+projectDashboardRoutes.get(
   "/",
   authenticate,
   authorize(ROLES.COORDINATOR),
   getProjectDashboardController,
 );
 
+router.get(
+  "/coordinator",
+  authenticate,
+  authorize(ROLES.COORDINATOR),
+  getCoordinatorDashboardController,
+);
+
 export default router;
+export { projectDashboardRoutes };
