@@ -90,3 +90,81 @@ export const getProjectDashboard = async (projectId, coordinatorId) => {
     },
   };
 };
+
+export const getCoordinatorDashboard = async (coordinatorId) => {
+  const projects = await Project.findAll({
+    where: {
+      createdBy: coordinatorId,
+    },
+    include: [
+      {
+        model: Task,
+        as: "tasks",
+        include: [
+          {
+            model: TaskAssignment,
+            as: "assignments",
+            attributes: ["status"],
+          },
+        ],
+      },
+    ],
+    order: [["createdAt", "DESC"]],
+  });
+
+  let totalTasks = 0;
+  let completedTasks = 0;
+
+  const projectStats = projects.map((project) => {
+    const tasks = project.tasks || [];
+
+    const completed = tasks.filter((task) => {
+      const assignments = task.assignments || [];
+      return (
+        assignments.length > 0 &&
+        assignments.every((assignment) => assignment.status === "COMPLETED")
+      );
+    }).length;
+
+    const pending = tasks.length - completed;
+
+    totalTasks += tasks.length;
+    completedTasks += completed;
+
+    return {
+      id: project.id,
+      title: project.title,
+      status: project.status,
+      totalTasks: tasks.length,
+      completedTasks: completed,
+      pendingTasks: pending,
+      progress:
+        tasks.length === 0
+          ? 0
+          : Number(((completed / tasks.length) * 100).toFixed(2)),
+    };
+  });
+
+  const activeProjects = projects.filter(
+    (project) => project.status === "ACTIVE",
+  ).length;
+
+  const completedProjects = projects.filter(
+    (project) => project.status === "COMPLETED",
+  ).length;
+
+  return {
+    summary: {
+      activeProjects,
+      completedProjects,
+      totalTasks,
+      completedTasks,
+      pendingTasks: totalTasks - completedTasks,
+      completionPercentage:
+        totalTasks === 0
+          ? 0
+          : Number(((completedTasks / totalTasks) * 100).toFixed(2)),
+    },
+    projects: projectStats,
+  };
+};

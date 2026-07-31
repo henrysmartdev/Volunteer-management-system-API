@@ -26,7 +26,12 @@ router.post(
   assignVolunteersController,
 );
 
-router.get("/", authenticate, getTaskAssignmentsController);
+router.get(
+  "/",
+  authenticate,
+  authorize(ROLES.COORDINATOR),
+  getTaskAssignmentsController,
+);
 
 router.delete(
   "/:volunteerId",

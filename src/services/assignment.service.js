@@ -99,11 +99,21 @@ export const assignVolunteers = async (taskId, coordinatorId, volunteerIds) => {
 /**
  * Get all volunteers assigned to a task
  */
-export const getTaskAssignments = async (taskId) => {
+export const getTaskAssignments = async (taskId, coordinatorId) => {
   const task = await Task.findByPk(taskId);
 
   if (!task) {
     throw new Error("Task not found");
+  }
+
+  const project = await Project.findByPk(task.projectId);
+
+  if (!project) {
+    throw new Error("Project not found");
+  }
+
+  if (project.createdBy !== coordinatorId) {
+    throw new Error("You are not authorized to view assignments");
   }
 
   return TaskAssignment.findAll({

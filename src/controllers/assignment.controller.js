@@ -25,7 +25,10 @@ export const assignVolunteersController = async (req, res, next) => {
 
 export const getTaskAssignmentsController = async (req, res, next) => {
   try {
-    const assignments = await getTaskAssignments(req.params.taskId);
+    const assignments = await getTaskAssignments(
+      req.params.taskId,
+      req.user.id,
+    );
 
     res.status(200).json({
       success: true,

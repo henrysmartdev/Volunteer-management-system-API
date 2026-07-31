@@ -4,7 +4,7 @@ Core API endpoints for the Volunteer Management System, including authentication
 
 ## Authentication
 
-- POST `/api/v1/auth/register`
+- POST `/api/v1/auth/register` (optionally supply `role` as `VOLUNTEER` or `COORDINATOR`)
 - POST `/api/v1/auth/login`
 - POST `/api/v1/auth/forgot-password`
 - POST `/api/v1/auth/reset-password`
@@ -62,3 +62,29 @@ Core API endpoints for the Volunteer Management System, including authentication
 ## Dashbord progress
 
 - GET `/api/v1/projects/:projectId/dashboard`
+
+## Coordinator generates QR
+
+- POST `/api/v1/projects/:projectId/qr-code`
+
+## Volunteer scans QR
+
+- POST `/api/v1/attendance/check-in`
+<!-- checkin qrcode -->
+- POST `/api/v1/attendance/check-in`
+<!-- manual checkin -->
+- POST `/api/v1/projects/:projectId/manual-check-in`
+- GET `/api/v1/reports/volunteer-hours`
+- PATCH `/api/v1/projects/:projectId/check-out`
+<!-- attendance history -->
+- GET `/api/v1/attendance/history`
+
+<!-- hourly report -->
+
+- GET `/api/v1/reports/volunteer-hours`
+<!-- attendance report -->
+- GET `/api/v1/reports/projects/:projectId/attendance`
+<!-- project progress -->
+- GET `/api/v1/dashboard/coordinator`
+<!-- basic analytic -->
+- GET `/api/v1/analytics`

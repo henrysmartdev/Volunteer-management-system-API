@@ -10,6 +10,11 @@ export const registerValidator = [
   body("password")
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8 characters"),
+
+  body("role")
+    .optional()
+    .isIn(["VOLUNTEER", "COORDINATOR"])
+    .withMessage("Role must be VOLUNTEER or COORDINATOR"),
 ];
 
 export const loginValidator = [

@@ -19,7 +19,9 @@ import {
 } from "../validators/project.validator.js";
 
 import taskRoutes from "./task.routes.js";
-import dashboardRoutes from "./dashboard.routes.js";
+import { projectDashboardRoutes } from "./dashboard.routes.js";
+
+import { projectAttendanceRoutes } from "./attendance.routes.js";
 
 const router = Router();
 
@@ -54,6 +56,8 @@ router.delete(
 
 router.use("/:projectId/tasks", taskRoutes);
 
-router.use("/:projectId/dashboard", dashboardRoutes);
+router.use("/:projectId/dashboard", projectDashboardRoutes);
+
+router.use("/:projectId", projectAttendanceRoutes);
 
 export default router;

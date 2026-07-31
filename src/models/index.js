@@ -6,6 +6,7 @@ import Task from "./Task.js";
 import TaskAssignment from "./TaskAssignment.js";
 import PasswordReset from "./PasswordReset.js";
 import Notification from "./Notification.js";
+import Attendance from "./Attendance.js";
 
 /*Relationships*/
 
@@ -79,6 +80,24 @@ Notification.belongsTo(User, {
   as: "user",
 });
 
+Project.hasMany(Attendance, {
+  foreignKey: "projectId",
+  as: "attendances",
+});
+User.hasMany(Attendance, {
+  foreignKey: "volunteerId",
+  as: "attendances",
+});
+Attendance.belongsTo(Project, {
+  foreignKey: "projectId",
+  as: "project",
+});
+
+Attendance.belongsTo(User, {
+  foreignKey: "volunteerId",
+  as: "volunteer",
+});
+
 export {
   sequelize,
   User,
@@ -87,4 +106,5 @@ export {
   TaskAssignment,
   PasswordReset,
   Notification,
+  Attendance,
 };

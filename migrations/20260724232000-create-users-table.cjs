@@ -31,7 +31,7 @@ module.exports = {
       },
 
       role: {
-        type: Sequelize.ENUM("VOLUNTEER", "COORDINATOR"),
+        type: Sequelize.ENUM("VOLUNTEER", "COORDINATOR", "ADMIN"),
         defaultValue: "VOLUNTEER",
       },
 
