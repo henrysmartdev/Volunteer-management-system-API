@@ -4,6 +4,10 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import PasswordReset from "../models/PasswordReset.js";
 import { ROLES } from "../constants/roles.js";
+import { sendPasswordResetEmail } from "./email.service.js";
+
+const hashResetToken = (token) =>
+  crypto.createHash("sha256").update(token).digest("hex");
 
 export const registerUser = async (userData) => {
   const {
@@ -73,26 +77,37 @@ export const forgotPassword = async ({ email }) => {
   });
 
   if (!user) {
-    throw new Error("User not found");
+    return null;
   }
 
   const token = crypto.randomBytes(32).toString("hex");
-
-  const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+  const tokenHash = hashResetToken(token);
+  const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
 
   await PasswordReset.create({
     userId: user.id,
-    token,
+    tokenHash,
     expiresAt,
+    used: false,
   });
 
-  return token;
+  await sendPasswordResetEmail({
+    email: user.email,
+    firstName: user.firstName,
+    token,
+  });
+
+  return {
+    emailSent: true,
+  };
 };
 
 export const resetPassword = async ({ token, password }) => {
+  const tokenHash = hashResetToken(token);
+
   const reset = await PasswordReset.findOne({
     where: {
-      token,
+      tokenHash,
       used: false,
     },
   });
@@ -107,13 +122,15 @@ export const resetPassword = async ({ token, password }) => {
 
   const user = await User.findByPk(reset.userId);
 
+  if (!user) {
+    throw new Error("User not found");
+  }
+
   const hashedPassword = await bcrypt.hash(password, 12);
 
   user.password = hashedPassword;
-
   await user.save();
 
   reset.used = true;
-
   await reset.save();
 };

@@ -9,6 +9,7 @@ const PasswordReset = sequelize.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
+
     userId: {
       type: Sequelize.UUID,
       allowNull: false,
@@ -18,15 +19,19 @@ const PasswordReset = sequelize.define(
       },
       onDelete: "CASCADE",
     },
-    token: {
+
+    tokenHash: {
       type: DataTypes.STRING,
       allowNull: false,
+      field: "token",
     },
+
     used: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
       defaultValue: false,
+      allowNull: false,
     },
+
     expiresAt: {
       type: DataTypes.DATE,
       allowNull: false,

@@ -48,12 +48,11 @@ export const login = async (req, res) => {
 };
 
 export const forgotPasswordController = async (req, res) => {
-  const token = await forgotPassword(req.body);
+  await forgotPassword(req.body);
 
   res.status(200).json({
     success: true,
-    message: "Password reset token generated",
-    token,
+    message: "If your email is registered, a password reset link has been sent.",
   });
 };
 

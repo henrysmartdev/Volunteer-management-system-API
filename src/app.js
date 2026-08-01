@@ -44,17 +44,22 @@ app.use((error, req, res, next) => {
   const normalizedMessage = message.toLowerCase();
   const status =
     error.status ||
-    (normalizedMessage.includes("not found") ? 404 :
-      normalizedMessage.includes("not authorized") ||
-      normalizedMessage.includes("unauthorized") ||
-      normalizedMessage.includes("not assigned") ||
-      normalizedMessage.includes("access denied") ? 403 :
-      normalizedMessage.includes("already") ||
-      normalizedMessage.includes("exists") ? 409 :
-      normalizedMessage.includes("invalid") ||
-      normalizedMessage.includes("expired") ||
-      normalizedMessage.includes("cannot") ||
-      normalizedMessage.includes("must") ? 400 : 500);
+    (normalizedMessage.includes("not found")
+      ? 404
+      : normalizedMessage.includes("not authorized") ||
+          normalizedMessage.includes("unauthorized") ||
+          normalizedMessage.includes("not assigned") ||
+          normalizedMessage.includes("access denied")
+        ? 403
+        : normalizedMessage.includes("already") ||
+            normalizedMessage.includes("exists")
+          ? 409
+          : normalizedMessage.includes("invalid") ||
+              normalizedMessage.includes("expired") ||
+              normalizedMessage.includes("cannot") ||
+              normalizedMessage.includes("must")
+            ? 400
+            : 500);
 
   if (status >= 500) {
     console.error(error);
