@@ -53,7 +53,7 @@ export const loginUser = async ({ email, password }) => {
       expiresIn: process.env.JWT_EXPIRES_IN,
     },
   );
-
+console.log("JWT_SECRET:", process.env.JWT_SECRET);
   return {
     user,
     token,

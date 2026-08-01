@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import app from "./app.js";
 import sequelize from "./config/database.js";
 
+
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
@@ -18,5 +19,6 @@ const startServer = async () => {
     console.error("Database connection failed:", error.message);
   }
 };
+
 
 startServer();

@@ -27,15 +27,42 @@ Task.belongsTo(Project, {
   foreignKey: "projectId",
 });
 
+
+User.hasMany(Task, { foreignKey: "createdBy" });
+Task.belongsTo(User, { foreignKey: "createdBy" });
+
+// Assignment relationships
+Assignment.belongsTo(User, {
+  foreignKey: "volunteerId",
+
+});
+
+User.hasMany(Assignment, {
+  foreignKey: "volunteerId",
+  
+});
+
+Assignment.belongsTo(Task, {
+  foreignKey: "taskId",
+  
+});
+
+Task.hasMany(Assignment, {
+  foreignKey: "taskId",
+  
+});
+
 // Volunteers are assigned to tasks
 User.belongsToMany(Task, {
   through: Assignment,
   foreignKey: "volunteerId",
+  as: "assignedTasks",
 });
 
 Task.belongsToMany(User, {
   through: Assignment,
   foreignKey: "taskId",
+  as: "volunteers",
 });
 
 // Attendance
@@ -63,6 +90,8 @@ User.hasMany(PasswordReset, {
 PasswordReset.belongsTo(User, {
   foreignKey: "userId",
 });
+
+
 
 export {
   sequelize,

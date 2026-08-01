@@ -3,7 +3,7 @@ import { ROLES } from "../constants/roles.js";
 import { Op } from "sequelize";
 
 export const createProject = async (data, user) => {
- 
+
   const project = await Project.create({
     title: data.title,
     description: data.description,
@@ -13,8 +13,6 @@ export const createProject = async (data, user) => {
   });
 
   return project
-  
-  
   
 };
 

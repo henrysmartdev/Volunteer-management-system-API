@@ -27,7 +27,7 @@ router.get("/",
 
 router.get("/:id", 
   authenticate,
-  getProjectController
+  getProjectByIdController
 );
 
 
