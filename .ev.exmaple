@@ -18,3 +18,8 @@ CLOUDINARY_API_SECRET=your_api_secret
 
 QR_SECRET=your_super_secret_qr_key
 QR_EXPIRES_IN=15m
+
+
+RESEND_API_KEY=
+EMAIL_FROM=onboarding@resend.dev
+CLIENT_URL=
